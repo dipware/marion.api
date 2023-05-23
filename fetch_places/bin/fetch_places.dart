@@ -1,6 +1,5 @@
-// import 'package:fetch_places/fetch_places.dart' as fetch_places;
-import 'dart:io';
+import 'package:fetch_places/fetch_places.dart';
 
 void main(List<String> arguments) {
-  print(Platform.environment[])
+  print(Env.key1);
 }
