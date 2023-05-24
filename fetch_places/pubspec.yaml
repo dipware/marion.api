@@ -9,6 +9,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   envied: ^0.3.0+3
+  http: ^1.0.0
   # path: ^1.8.0
 
 dev_dependencies:
