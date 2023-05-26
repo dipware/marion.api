@@ -1,3 +1,4 @@
+import 'package:tools/index.dart';
 import 'package:tools/places.dart';
 import 'package:tools/images.dart';
 import 'package:envied/envied.dart';
@@ -13,6 +14,9 @@ void main(List<String> arguments) async {
   if (arguments.isNotEmpty) {
     final cmd = arguments[0];
     switch (cmd) {
+      case 'index':
+        await indexDB();
+        break;
       case 'init':
         await callNearbyPlacesAPI(Env.key1);
         break;

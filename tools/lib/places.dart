@@ -28,12 +28,13 @@ Future<void> callNearbyPlacesAPI(String key) async {
     fetchedList.add(object as Map<String, dynamic>);
   }
 
-  var nPT = jSON['next_page_token'];
+  String? nPT = jSON['next_page_token'];
   int retries = 0;
 
   while (nPT != null) {
     sleep(Duration(seconds: 1));
-    final nextPageUrl = Uri.parse('${baseUrl}pagetoken=$nPT$key');
+    final nextUrlString = '${baseUrl}pagetoken=$nPT&key=$key';
+    final nextPageUrl = Uri.parse(nextUrlString);
     final nextResponse = await http.read(nextPageUrl);
     jSON = json.decode(nextResponse);
     if (jSON['status'] == 'INVALID_REQUEST') {
@@ -49,9 +50,13 @@ Future<void> callNearbyPlacesAPI(String key) async {
     }
     nPT = jSON['next_page_token'];
   }
-
+  final outIndex = [];
   for (final object in fetchedList) {
     await File('${outDir.path}${object['place_id'].toString()}.json')
         .writeAsString(json.encode(object));
+    outIndex.add(object['place_id'].toString());
   }
+  await File('${outDir.path}n.txt')
+      .writeAsString(fetchedList.length.toString());
+  await File('${outDir.path}index.txt').writeAsString(outIndex.join('\n'));
 }
