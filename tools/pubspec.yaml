@@ -1,5 +1,5 @@
-name: fetch_places
-description: A sample command-line application.
+name: tools
+description: Tools for marion.guide API.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
