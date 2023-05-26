@@ -1,0 +1,16 @@
+{
+    "swatch": [
+    {
+            "blue": [34, 55, 101]
+    },
+    { 
+        "light_blue": [60, 103, 154]
+    },
+    { 
+        "white": [255, 255, 255]
+    }
+        ],
+    "primary": "blue",
+    "secondary": "light_blue",
+    "tertiary": "white"
+}

@@ -74,6 +74,22 @@ Future<void> dev() async {
       }
     }
   }
-  print(outJSON);
-  await File('photos.list.json').writeAsString(json.encode(outJSON));
+  for (final entry in outJSON.entries) {
+    final List photos = entry.value;
+    if (photos.isNotEmpty) {
+      print(photos);
+      int numPhotos = photos.length;
+      for (int i = 0; i < numPhotos; i++) {
+        final height = photos[i]['height'];
+        print(height);
+        final List html_attributions = photos[i]['html_attributions'];
+        print(html_attributions);
+        final photo_reference = photos[i]['photo_reference'];
+        print(photo_reference);
+        final width = photos[i]['width'];
+        print(width);
+      }
+    }
+  }
+  // await File('photos.list.json').writeAsString(json.encode(outJSON));
 }
