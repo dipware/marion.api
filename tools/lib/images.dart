@@ -89,7 +89,7 @@ Future<void> processPhotos() async {
       for (final match in matches) {
         final file = await File(match.path).readAsBytes();
         final type = match.path.split('.').last;
-        if (['jpeg', 'jpg'].contains(type)) {
+        if (['jpeg', 'jpg'].contains(type.toLowerCase())) {
           final image = img.decodeJpg(file)!;
           final width = image.width;
           final large =
@@ -97,9 +97,24 @@ Future<void> processPhotos() async {
           final medium =
               img.copyResize(image, width: width > 600 ? 600 : width);
           final small = img.copyResize(image, width: width > 300 ? 300 : width);
-          await img.encodeJpgFile('${dir.path}/large.$type', large);
-          await img.encodeJpgFile('${dir.path}/medium.$type', medium);
-          await img.encodeJpgFile('${dir.path}/small.$type', small);
+          img.encodeJpgFile('${dir.path}/large.$type', large);
+          img.encodeJpgFile('${dir.path}/medium.$type', medium);
+          img.encodeJpgFile('${dir.path}/small.$type', small);
+          File('${dir.path}/type.txt').writeAsString(type);
+        } else if (['png'].contains(type.toLowerCase())) {
+          final image = img.decodePng(file)!;
+          final width = image.width;
+          final large =
+              img.copyResize(image, width: width > 1200 ? 1200 : width);
+          final medium =
+              img.copyResize(image, width: width > 600 ? 600 : width);
+          final small = img.copyResize(image, width: width > 300 ? 300 : width);
+          img.encodePngFile('${dir.path}/large.$type', large);
+          img.encodePngFile('${dir.path}/medium.$type', medium);
+          img.encodePngFile('${dir.path}/small.$type', small);
+          File('${dir.path}/type.txt').writeAsString(type);
+        } else {
+          throw Exception('New Type: $type');
         }
       }
     }
