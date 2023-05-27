@@ -73,7 +73,6 @@ Future<void> downloadImagesFromPlaces(String key) async {
 }
 
 Future<void> processPhotos() async {
-  final photosDir = Directory('../gplaces/photos/');
   final dirContents =
       await Directory('../gplaces/photos/').list(followLinks: false).toList();
   for (final dir in dirContents) {
@@ -83,7 +82,6 @@ Future<void> processPhotos() async {
       final dirName = dir.path.split('/').last;
       final fileName = dirName.substring(dirName.length - 16);
       final glob = Glob('${dir.path}/$fileName.*');
-      print(glob.pattern);
       final matches = glob.listSync(followLinks: false);
       if (matches.isEmpty) {
         throw Exception('Error! This list should not be empty.');
@@ -104,8 +102,6 @@ Future<void> processPhotos() async {
           await img.encodeJpgFile('${dir.path}/small.$type', small);
         }
       }
-      // for (final match in glob.)
-      // final photoFile
     }
   }
 }
