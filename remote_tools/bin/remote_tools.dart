@@ -6,7 +6,7 @@ void main(List<String> arguments) async {
     final cmd = arguments[0];
     switch (cmd) {
       case 'test':
-        print('HEY!');
+        print(arguments[1]);
         break;
       case 'index':
         await indexDB();
