@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
 
-      - run: dart run tools/bin/tools.dart test
+      - run: cd tools && dart pub get && dart run tools test
