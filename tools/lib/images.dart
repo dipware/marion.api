@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:glob/glob.dart';
+import 'package:glob/list_local_fs.dart';
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as img;
 
 Future<void> downloadImagesFromPlaces(String key) async {
   final apiUrlPhotos = 'https://maps.googleapis.com/maps/api/place/photo?';
@@ -36,6 +39,10 @@ Future<void> downloadImagesFromPlaces(String key) async {
             Directory('../gplaces/photos/$photo_reference').createSync();
             File('../gplaces/photos/$photo_reference/${photo_reference.substring(photo_reference.length - 16)}.$imageType')
                 .writeAsBytes(response.bodyBytes);
+
+            final image = img.decodeJpg(response.bodyBytes)!;
+            final medium = img.copyResize(image, width: 700);
+            final small = img.copyResize(image, width: 140);
           }
         }
       }
@@ -63,4 +70,42 @@ Future<void> downloadImagesFromPlaces(String key) async {
   //   }
   // }
   // await File('photos.list.json').writeAsString(json.encode(outJSON));
+}
+
+Future<void> processPhotos() async {
+  final photosDir = Directory('../gplaces/photos/');
+  final dirContents =
+      await Directory('../gplaces/photos/').list(followLinks: false).toList();
+  for (final dir in dirContents) {
+    final stat = await dir.stat();
+    final type = stat.type;
+    if (type == FileSystemEntityType.directory) {
+      final dirName = dir.path.split('/').last;
+      final fileName = dirName.substring(dirName.length - 16);
+      final glob = Glob('${dir.path}/$fileName.*');
+      print(glob.pattern);
+      final matches = glob.listSync(followLinks: false);
+      if (matches.isEmpty) {
+        throw Exception('Error! This list should not be empty.');
+      }
+      for (final match in matches) {
+        final file = await File(match.path).readAsBytes();
+        final type = match.path.split('.').last;
+        if (['jpeg', 'jpg'].contains(type)) {
+          final image = img.decodeJpg(file)!;
+          final width = image.width;
+          final large =
+              img.copyResize(image, width: width > 1200 ? 1200 : width);
+          final medium =
+              img.copyResize(image, width: width > 600 ? 600 : width);
+          final small = img.copyResize(image, width: width > 300 ? 300 : width);
+          await img.encodeJpgFile('${dir.path}/large.$type', large);
+          await img.encodeJpgFile('${dir.path}/medium.$type', medium);
+          await img.encodeJpgFile('${dir.path}/small.$type', small);
+        }
+      }
+      // for (final match in glob.)
+      // final photoFile
+    }
+  }
 }

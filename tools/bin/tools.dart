@@ -21,7 +21,8 @@ void main(List<String> arguments) async {
         await callNearbyPlacesAPI(Env.key1);
         break;
       case 'dev':
-        await downloadImagesFromPlaces(Env.key1);
+        // await downloadImagesFromPlaces(Env.key1);
+        await processPhotos();
         break;
       default:
         break;
