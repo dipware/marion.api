@@ -14,6 +14,9 @@ void main(List<String> arguments) async {
   if (arguments.isNotEmpty) {
     final cmd = arguments[0];
     switch (cmd) {
+      case 'test':
+        print('HEY!');
+        break;
       case 'index':
         await indexDB();
         break;
