@@ -6,7 +6,9 @@ Future<void> indexDB() async {
       await gPlacesPhotosDirectory.list(followLinks: false).toList();
   final indexList = [];
   for (final entry in gPlacesPhotosList) {
-    indexList.add(entry.path.split('/').last);
+    if (!['n.txt', 'index.txt'].contains(entry.path.split('/').last)) {
+      indexList.add(entry.path.split('/').last);
+    }
   }
   final outIndex = '${gPlacesPhotosDirectory.path}index.txt';
   final outN = '${gPlacesPhotosDirectory.path}n.txt';
