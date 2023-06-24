@@ -60,3 +60,25 @@ Future<void> callNearbyPlacesAPI(String key) async {
       .writeAsString(fetchedList.length.toString());
   await File('${outDir.path}index.txt').writeAsString(outIndex.join('\n'));
 }
+
+Future<void> makeEndpointAll() async {
+  final gPlacesPlacesDirectory = Directory('../gplaces/');
+  final gPlacesPlacesList =
+      await gPlacesPlacesDirectory.list(followLinks: false).toList();
+  final Map<String, dynamic> outJSON = {};
+  outJSON['all'] = [];
+  for (final entry in gPlacesPlacesList) {
+    if (!(entry.statSync().type == FileSystemEntityType.file)) continue;
+    final name = entry.path.split('/').last;
+    if (!['n.txt', 'index.txt', 'all.txt'].contains(name)) {
+      final Map<String, dynamic> cleanedJSON = {};
+      final jSON = json.decode(File(entry.path).readAsStringSync());
+      cleanedJSON['name'] = jSON['name'];
+      cleanedJSON['place_id'] = jSON['place_id'];
+      cleanedJSON['geometry']['location']['lng'] = jSON['lat'];
+      outJSON['all'].add(cleanedJSON);
+    }
+  }
+  final outAll = '${gPlacesPlacesDirectory.path}all.txt';
+  File(outAll).writeAsString(json.encode(outJSON));
+}
