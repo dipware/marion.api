@@ -23,6 +23,13 @@ void main(List<String> arguments) async {
       case 'init':
         await callNearbyPlacesAPI(Env.key1);
         break;
+      case 'make':
+        switch (arguments[1]) {
+          case 'all':
+            await makeEndpointAll();
+            break;
+        }
+        break;
       case 'dev':
         // await downloadImagesFromPlaces(Env.key1);
         await processPhotos();

@@ -39,10 +39,6 @@ Future<void> downloadImagesFromPlaces(String key) async {
             Directory('../gplaces/photos/$photo_reference').createSync();
             File('../gplaces/photos/$photo_reference/${photo_reference.substring(photo_reference.length - 16)}.$imageType')
                 .writeAsBytes(response.bodyBytes);
-
-            final image = img.decodeJpg(response.bodyBytes)!;
-            final medium = img.copyResize(image, width: 700);
-            final small = img.copyResize(image, width: 140);
           }
         }
       }
