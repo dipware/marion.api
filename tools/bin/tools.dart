@@ -27,12 +27,20 @@ void main(List<String> arguments) async {
         switch (arguments[1]) {
           case 'all':
             await makeEndpointAll();
+            await processPhotoFiletypeForEndpoint();
+            break;
+          case 'photos':
+            await downloadImagesFromPlaces(Env.key1);
+            await processPhotos();
             break;
         }
         break;
-      case 'dev':
-        // await downloadImagesFromPlaces(Env.key1);
-        await processPhotos();
+      case 'verarbeit':
+        switch (arguments[1]) {
+          case 'type':
+            await processPhotoFiletypeForEndpoint();
+            break;
+        }
         break;
       default:
         break;
