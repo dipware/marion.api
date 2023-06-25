@@ -70,15 +70,15 @@ Future<void> makeEndpointAll() async {
   for (final entry in gPlacesPlacesList) {
     if (!(entry.statSync().type == FileSystemEntityType.file)) continue;
     final name = entry.path.split('/').last;
-    if (!['n.txt', 'index.txt', 'all.txt'].contains(name)) {
-      final Map<String, dynamic> cleanedJSON = {};
+    if (!['n.txt', 'index.txt', 'all.json'].contains(name)) {
+      // final Map<String, dynamic> cleanedJSON = {};
       final jSON = json.decode(File(entry.path).readAsStringSync());
-      cleanedJSON['name'] = jSON['name'];
-      cleanedJSON['place_id'] = jSON['place_id'];
-      cleanedJSON['geometry']['location']['lng'] = jSON['lat'];
-      outJSON['all'].add(cleanedJSON);
+      // cleanedJSON['name'] = jSON['name'];
+      // cleanedJSON['place_id'] = jSON['place_id'];
+      // cleanedJSON['geometry']['location']['lng'] = jSON['lat'];
+      outJSON['all'].add(jSON);
     }
   }
-  final outAll = '${gPlacesPlacesDirectory.path}all.txt';
+  final outAll = '${gPlacesPlacesDirectory.path}all.json';
   File(outAll).writeAsString(json.encode(outJSON));
 }
